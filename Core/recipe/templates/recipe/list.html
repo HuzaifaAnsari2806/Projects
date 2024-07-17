@@ -1,0 +1,12 @@
+{% block content %}
+
+<h1>My Recipes</h1>
+<a href="{% url "recipes:create" %}">Add Recipe</a>
+<ol>
+    {% for obj in objects_list %}
+        
+            <li><a href="{{obj.get_absolute_url}}" >{{obj.name}}</a></li>
+        
+    {% endfor %}
+</ol>
+{% endblock content %}

@@ -1,0 +1,21 @@
+
+<h1>Hello World</h1>
+
+          <form action="" >
+            <input type="text" name="q" />
+            <input type="Submit"  />
+          </form> 
+
+{% block content %}
+<ol>
+    {% for objects in objects_list %}
+        {% if objects.name %}
+            <h1><li> {{objects.name}}</li></h1>
+
+                <p>{{objects.email}} </p>
+                <p><a href="{{ objects.get_absolute_url }}">View details</a></p>
+        {% endif %}  
+    {% endfor %}
+</ol>
+{% endblock content %}
+        

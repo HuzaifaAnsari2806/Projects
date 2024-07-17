@@ -1,0 +1,76 @@
+
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static "recipes/recipe-list.css" %}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+{% block content %}
+
+
+{% if message %}
+
+<p>{{message}} </p>
+
+{% endif %}
+<form action="" method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    {% if formset %}
+    <h3>Ingredients</h3>
+    <div id='ingredient-form-list'>
+            <div class="ingredient-form">
+                {{formset.as_p}}
+            </div>
+    </div>
+        <div id='form' class="hidden" >{{formset.empty_form}}</br></div>
+    <button id='add' type="button">Add more</button>
+    <button id='upload' type="button">Upload Image</button>
+    {% endif %}
+    <button type="submit" >Save</button>
+    
+</form>
+
+
+<script>
+    const button=document.getElementById('add')
+    const totalNewForms=document.getElementById('id_form-TOTAL_FORMS')
+    
+    button.addEventListener('click',()=>{
+        if(event){
+            event.preventDefault(event)
+        }
+        const currentIngredientForms=document.getElementsByClassName('ingredient-form')
+        const currentFormCount=currentIngredientForms.length+1
+        console.log(currentIngredientForms.length)
+        const formCopyTarget=document.getElementById('ingredient-form-list')
+        const form=document.getElementById('form').cloneNode(true)
+        form.setAttribute('class','ingredient-form')
+        form.setAttribute('id','form-${currentFormCount}')
+        const regex=new RegExp('__prefix__','g')
+        form.innerHTML=form.innerHTML.replace(regex,currentFormCount)
+        totalNewForms.setAttribute('value',currentFormCount+1)
+        formCopyTarget.append(form)
+    })
+    
+        document.getElementById("upload").addEventListener("click", function() {
+            window.location.href = "{{ object1.get_image_url }}";
+        });
+    
+    
+
+</script>
+
+{% endblock content %}
+</body>
+</html>
+
+
+

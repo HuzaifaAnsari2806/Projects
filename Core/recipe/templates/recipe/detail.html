@@ -1,0 +1,21 @@
+{% block content %}
+
+        <h1> {{object.name}}</h1>
+        {% if object.get_edit_url %}
+        <small>
+                <a href="{{object.get_edit_url}}">Edit</a>
+                <a href="{{object.get_delete_url}}">Delete</a>
+        </small>
+        {% endif %}
+        <p>{{object.desc}}</p><br>
+        <p>{{object.directions}}</p>
+
+        {% for ingredient in object.recipeingredient_set.all  %}
+        
+        <h4> {{ingredient.name}}</h4>
+        <p>{{ingredient.as_mks}}</p>
+        <p>{{ingredient.as_imperial}}</p>
+        
+        {% endfor %}
+
+{% endblock content %}

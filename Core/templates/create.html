@@ -1,0 +1,17 @@
+{% extends "search.html" %}
+
+{% block content %}
+
+
+{% if not created %}
+<form action="." method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" >Create User</button>
+{% else %}
+<p>Your account was created</p>
+<a href='/base/{{object.id}}/'> {{object.name}}-{{object.email}} </a>
+
+{% endif %}
+
+{% endblock content %}
