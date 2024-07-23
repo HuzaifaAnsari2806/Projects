@@ -2,6 +2,7 @@ import datetime
 import jwt
 
 from django.conf import settings
+from django.db.models import Sum 
 
 from rest_framework import parsers, renderers, status
 from rest_framework.views import APIView
@@ -137,3 +138,20 @@ def ImageUpdateDeleteView(request,parent_id=None,id=None):
 class StatsView(generics.ListCreateAPIView):
     queryset=Statistics.objects.all()
     serializer_class=StatSerializer
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+
+        # Calculate total_sum
+        total_sum = queryset.aggregate(total_sum=Sum('value'))['total_sum']
+
+        # Serialize individual instances
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Construct response
+        response_data = {
+            'rows': serializer.data,
+            'total_sum': total_sum
+        }
+
+        return Response(response_data)

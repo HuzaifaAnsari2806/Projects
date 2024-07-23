@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.db.models import Sum 
+
 
 from .models import Blog,BlogImages,Statistics
 
@@ -33,13 +33,6 @@ class BlogSerializer(serializers.ModelSerializer):
         return blog
 
 class StatSerializer(serializers.ModelSerializer):
-    total_sum=serializers.IntegerField(read_only=True)
     class Meta:
         model=Statistics
-        fields=['field_name','value','total_sum']
-        
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        total_sum = Statistics.objects.aggregate(total_sum=Sum('value'))['total_sum']
-        representation['total_sum'] = total_sum
-        return representation
+        fields=['field_name','value']
